@@ -1,27 +1,22 @@
 # routers/auth.py
-
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
-from .. import database, models, schemas, auth  # تأكد من أن المسار صحيح حسب بنية المشروع
 
+# استيراد الملفات بشكل مطلق
+from database import SessionLocal, get_db
+import models
+import schemas
+from admin_api import auth  # استدعاء دوال JWT وكلمة المرور من admin_api/auth.py
+
+# إنشاء الـ Router
 router = APIRouter(
     prefix="/api/auth",
     tags=["Authentication"]
 )
 
-# ✅ تعريف الـ OAuth2Scheme حتى يمكن استخدامه في ملفات أخرى مثل users.py
+# تعريف OAuth2Scheme
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
-
-# -----------------------------
-# دالة لجلب جلسة قاعدة البيانات
-# -----------------------------
-def get_db():
-    db = database.SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 # -----------------------------
 # تسجيل مستخدم جديد
@@ -45,7 +40,6 @@ def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
     return new_user
-
 
 # -----------------------------
 # تسجيل الدخول (JWT)
