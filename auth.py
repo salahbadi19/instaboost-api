@@ -1,3 +1,4 @@
+
 # admin_api/auth.py
 
 from passlib.context import CryptContext
@@ -8,7 +9,8 @@ from dotenv import load_dotenv
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
-from . import database, models
+import database
+import models
 
 # تحميل المتغيرات من .env
 load_dotenv()
