@@ -1,9 +1,9 @@
 # main.py
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routers import auth, users, orders, reviews, content, admin, chat
-from .database import engine
-from . import models
+from routers import auth, users, orders, reviews, content, admin, chat
+from database import engine
+import models
 
 # إنشاء جداول قاعدة البيانات تلقائيًا عند التشغيل
 models.Base.metadata.create_all(bind=engine)
@@ -32,4 +32,4 @@ app.include_router(chat.router)  # دردشة الدعم عبر WebSocket
 # نقطة جذر بسيطة للاختبار
 @app.get("/")
 def root():
-    return {"message": "InstaBoost API is running!"}
+    return {"message": "🚀 InstaBoost API is running successfully!"}
